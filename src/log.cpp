@@ -28,7 +28,7 @@ void Log::WriteToLog(const std::string& key, const std::string& value) {
 void Log::PrintLog() {
     logFile.close();
 
-    std::ifstream inputFile("log.customext");
+    std::ifstream inputFile("log.arpan");
     std::string line;
 
     if (inputFile.is_open()) {
