@@ -42,13 +42,13 @@ void Log::PrintLog() {
         std::cout << "Error opening log file for reading." << std::endl;
     }
 
-    logFile.open("log.customext", std::ios_base::app);
+    logFile.open("log.arpan", std::ios_base::app);
 }
 
 void Log::PrintLogWithoutTimestamp() {
     logFile.close();
 
-    std::ifstream inputFile("log.customext");
+    std::ifstream inputFile("log.arpan");
     std::string line;
     std::vector<std::string> keyValuePairs;
 
@@ -69,7 +69,7 @@ void Log::PrintLogWithoutTimestamp() {
         std::cout << "Error opening log file for reading." << std::endl;
     }
 
-    logFile.open("log.customext", std::ios_base::app);
+    logFile.open("log.arpan", std::ios_base::app);
 
     std::cout << "[";
     for (size_t i = 0; i < keyValuePairs.size(); ++i) {
@@ -84,7 +84,7 @@ void Log::PrintLogWithoutTimestamp() {
 std::string Log::GetLogValueByKey(const std::string& key) {
     logFile.close();
 
-    std::ifstream inputFile("log.customext");
+    std::ifstream inputFile("log.arpan");
     std::string line;
     std::string value;
 
@@ -105,7 +105,7 @@ std::string Log::GetLogValueByKey(const std::string& key) {
         std::cout << "Error opening log file for reading." << std::endl;
     }
 
-    logFile.open("log.customext", std::ios_base::app);
+    logFile.open("log.arpan", std::ios_base::app);
 
     return value;
 }

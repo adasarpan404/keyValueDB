@@ -6,9 +6,9 @@
 int main() {
     std::string input;
 
-    Log log("log.customext");
+    Log log("log.arpan");
 
-    std::cout << "Welcome to the Log Shell! Enter 'help' for a list of commands or 'q' to quit." << std::endl;
+    std::cout << "Welcome to the keyValueDB Shell! Enter 'help' for a list of commands or 'q' to quit." << std::endl;
 
     while (true) {
         std::cout << "> ";
