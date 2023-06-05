@@ -8,6 +8,6 @@
 
 ## Install
 
-- git clone `git-url`
+- git clone `https://github.com/adasarpan404/keyValueDB`
 - cd KeyValueDB
 - make

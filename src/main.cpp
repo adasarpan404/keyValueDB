@@ -1,58 +1,53 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "log.h"
+#include "logger.h"
 
+using namespace std;
 int main() {
-    std::string input;
+    Logger logger;
+    string command;
 
-    Log log("log.arpan");
+    logger.readLogFromFile();  // Read data from log file at startup
 
-    std::cout << "Welcome to the keyValueDB Shell! Enter 'help' for a list of commands or 'q' to quit." << std::endl;
+    cout << "Interactive Log Shell\n";
+    cout << "Type 'help' for available commands.\n";
 
     while (true) {
-        std::cout << "> ";
-        std::getline(std::cin, input);
+        cout << "> ";
+        getline(cin, command);
 
-        if (input == "q") {
-            break;
-        } else if (input == "help") {
-            std::cout << "Available commands:" << std::endl;
-            std::cout << "- key-get: Get the value associated with a key." << std::endl;
-            std::cout << "- key-get all: Get all values without timestamps." << std::endl;
-            std::cout << "- key-write value: Write a new key-value pair to the log." << std::endl;
-            std::cout << "- help: Display this help message." << std::endl;
-            std::cout << "- q: Quit the program." << std::endl;
-        } else {
-            std::stringstream ss(input);
-            std::string command;
-            std::string key;
-            std::string value;
+        istringstream iss(command);
+        string cmd;
+        iss >> cmd;
 
-            ss >> command >> key;
+        if (cmd == "help") {
+            cout << "Available commands:\n";
+            cout << "  key-write <key> <value> : Write a key-value entry\n";
+            cout << "  key-read all : Read all key-value entries\n";
+            cout << "  key-read <key> : Read the value for a specific key\n";
+            cout << "  save : Save log entries to file\n";
+            cout << "  exit : Quit the program\n";
+        } else if (cmd == "key-write") {
+            string key, value;
+            iss >> key >> value;
+            logger.writeToLog(key, value);
+        } else if (cmd == "key-read") {
+            string key;
+            iss >> key;
 
-            if (command == "key-get") {
-                if (key == "all") {
-                    log.PrintLogWithoutTimestamp();
-                } else {
-                    std::string value = log.GetLogValueByKey(key);
-                    if (value.empty()) {
-                        std::cout << "No matching entry found for key: " << key << std::endl;
-                    } else {
-                        std::cout << "Value: " << value << std::endl;
-                    }
-                }
-            } else if (command == "key-write") {
-                ss >> value;
-                if (value.empty()) {
-                    std::cout << "Invalid command. Usage: key-write value" << std::endl;
-                } else {
-                    log.WriteToLog(key, value);
-                    std::cout << "Log entry added successfully." << std::endl;
-                }
+            if (key == "all") {
+                logger.readAllEntries();
             } else {
-                std::cout << "Invalid command. Enter 'help' for a list of commands." << std::endl;
+                logger.readValueForKey(key);
             }
+        } else if (cmd == "save") {
+            logger.saveLogToFile();
+        } else if (cmd == "exit") {
+            logger.saveLogToFile();  // Save log entries to file before exiting
+            break;
+        } else {
+            cout << "Invalid command. Type 'help' for available commands.\n";
         }
     }
 
