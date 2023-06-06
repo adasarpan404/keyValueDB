@@ -1,4 +1,4 @@
 obj/
-log.keyvalue
+log*.keyvalue
 keyValueStore
 .vscode/

@@ -4,16 +4,18 @@
 #include "logger.h"
 
 using namespace std;
-int main() {
+int main()
+{
     Logger logger;
     string command;
 
-    logger.readLogFromFile();  // Read data from log file at startup
-
+    logger.readLogFromFile(); // Read data from log file at startup
+    
     cout << "Interactive Log Shell\n";
     cout << "Type 'help' for available commands.\n";
 
-    while (true) {
+    while (true)
+    {
         cout << "> ";
         getline(cin, command);
 
@@ -21,32 +23,52 @@ int main() {
         string cmd;
         iss >> cmd;
 
-        if (cmd == "help") {
+        if (cmd == "help")
+        {
             cout << "Available commands:\n";
             cout << "  key-write <key> <value> : Write a key-value entry\n";
             cout << "  key-read all : Read all key-value entries\n";
             cout << "  key-read <key> : Read the value for a specific key\n";
             cout << "  save : Save log entries to file\n";
             cout << "  exit : Quit the program\n";
-        } else if (cmd == "key-write") {
+        }
+        else if (cmd == "key-write")
+        {
             string key, value;
             iss >> key >> value;
             logger.writeToLog(key, value);
-        } else if (cmd == "key-read") {
-            string key;
-            iss >> key;
+        }
+        else if (cmd == "key-read")
+        {
+            string subcommand;
+            iss >> subcommand;
 
-            if (key == "all") {
+            if (subcommand == "all")
+            {
                 logger.readAllEntries();
-            } else {
-                logger.readValueForKey(key);
             }
-        } else if (cmd == "save") {
+            else if(subcommand == "key"){
+                string key;
+                iss >> key;
+                logger.readValueForKey(key);
+            }else if(subcommand == "ID")
+            {
+                int ID;
+                iss >> ID;
+                logger.readValueForId(ID);
+            }
+        }
+        else if (cmd == "save")
+        {
             logger.saveLogToFile();
-        } else if (cmd == "exit") {
-            logger.saveLogToFile();  // Save log entries to file before exiting
+        }
+        else if (cmd == "exit")
+        {
+            logger.saveLogToFile(); // Save log entries to file before exiting
             break;
-        } else {
+        }
+        else
+        {
             cout << "Invalid command. Type 'help' for available commands.\n";
         }
     }
