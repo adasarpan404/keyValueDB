@@ -10,7 +10,7 @@ int main()
     string command;
 
     logger.readLogFromFile(); // Read data from log file at startup
-    
+
     cout << "Interactive Log Shell\n";
     cout << "Type 'help' for available commands.\n";
 
@@ -47,16 +47,25 @@ int main()
             {
                 logger.readAllEntries();
             }
-            else if(subcommand == "key"){
+            else if (subcommand == "key")
+            {
                 string key;
                 iss >> key;
                 logger.readValueForKey(key);
-            }else if(subcommand == "ID")
+            }
+            else if (subcommand == "ID")
             {
                 int ID;
                 iss >> ID;
                 logger.readValueForId(ID);
             }
+        }
+        else if (cmd == "key-update")
+        {
+            int id;
+            string newKey, newValue;
+            iss >> id >> newKey >> newValue;
+            logger.updateElementById(id, newKey, newValue);
         }
         else if (cmd == "save")
         {

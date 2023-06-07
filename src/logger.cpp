@@ -89,25 +89,41 @@ void Logger::readAllEntries() {
 }
 
 void Logger::readValueForKey(const string& key) {
-    auto it = logData.find(key);
-    if (it != logData.end()) {
-        cout << "Value for key '" << key << "': " << it->second << endl;
+    const LogEntry* latestEntry = nullptr;
+
+    // Iterate over the log entries in reverse order (from the end)
+    for (int i = logEntries.size() - 1; i >= 0; --i) {
+        const LogEntry& entry = logEntries[i];
+        if (entry.key == key) {
+            latestEntry = &entry;
+            break;
+        }
+    }
+
+    if (latestEntry != nullptr) {
+        cout << "Latest entry for key \"" << key << "\":" << endl;
+        cout << latestEntry->id << " | " << latestEntry->timestamp << " | " << latestEntry->key << " : " << latestEntry->value << endl;
     } else {
         cout << "Key not found." << endl;
     }
 }
 
+
 void Logger::readValueForId(int id) {
-    bool found = false;
-    for (const auto& entry : logEntries) {
+    const LogEntry* latestEntry = nullptr;
+
+    // Iterate over the log entries in reverse order (from the end)
+    for (int i = logEntries.size() - 1; i >= 0; --i) {
+        const LogEntry& entry = logEntries[i];
         if (entry.id == id) {
-            cout << "Entry for ID " << id << ":" << endl;
-            cout << entry.id << " | " << entry.timestamp << " | " << entry.key << " : " << entry.value << endl;
-            found = true;
+            latestEntry = &entry;
             break;
         }
     }
-    if (!found) {
+    if (latestEntry != nullptr) {
+        cout << "Latest entry for ID " << id << ":" << endl;
+        cout << latestEntry->id << " | " << latestEntry->timestamp << " | " << latestEntry->key << " : " << latestEntry->value << endl;
+    } else {
         cout << "ID not found." << endl;
     }
 }
@@ -127,4 +143,17 @@ void Logger::saveLogToFile() {
     logFile.close();
 
     cout << "Log file saved successfully." << endl;
+}
+
+void Logger::updateElementById(int id, const string& key, const string& value){
+    LogEntry entry;
+    entry.id = id;
+    entry.timestamp = getCurrentTimestamp();
+    entry.key = key;
+    entry.value = value;
+
+    logEntries.push_back(entry);
+    logData[key] = value;
+
+    cout << "New element created. ID: " << entry.id << ", Key: " << entry.key << ", Value: " << entry.value << endl;
 }

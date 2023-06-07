@@ -31,6 +31,7 @@ public:
     void readValueForKey(const string& key);
     void saveLogToFile();
     void readValueForId(int id);
+    void updateElementById(int id, const string& key, const string& value);
 };
 
 #endif  // LOGGER_H
