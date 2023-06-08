@@ -1,19 +1,15 @@
+#include "bitcask.h"
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "logger.h"
 
 using namespace std;
 int main()
 {
-    Logger logger;
+    Bitcask db("./data/");
     string command;
-
-    logger.readLogFromFile(); // Read data from log file at startup
-
     cout << "Interactive Log Shell\n";
     cout << "Type 'help' for available commands.\n";
-
     while (true)
     {
         cout << "> ";
@@ -22,63 +18,54 @@ int main()
         istringstream iss(command);
         string cmd;
         iss >> cmd;
-
         if (cmd == "help")
         {
             cout << "Available commands:\n";
-            cout << "  key-write <key> <value> : Write a key-value entry\n";
-            cout << "  key-read all : Read all key-value entries\n";
-            cout << "  key-read <key> : Read the value for a specific key\n";
-            cout << "  save : Save log entries to file\n";
-            cout << "  exit : Quit the program\n";
+            cout << "put <key> <value>\n";
+            cout << "get <key>\n";
+            cout << "next\n";
+            cout << "exit\n";
         }
-        else if (cmd == "key-write")
+        else if (cmd == "put")
         {
             string key, value;
             iss >> key >> value;
-            logger.writeToLog(key, value);
+            if (db.Put(key, value))
+                cout << "OK\n";
+            else
+                cout << "Error\n";
         }
-        else if (cmd == "key-read")
+        else if (cmd == "get")
         {
-            string subcommand;
-            iss >> subcommand;
-
-            if (subcommand == "all")
-            {
-                logger.readAllEntries();
-            }
-            else if (subcommand == "key")
-            {
-                string key;
-                iss >> key;
-                logger.readValueForKey(key);
-            }
-            else if (subcommand == "ID")
-            {
-                int ID;
-                iss >> ID;
-                logger.readValueForId(ID);
-            }
+            string key;
+            iss >> key;
+            string value = db.Get(key);
+            if (value != "")
+                cout << value << '\n';
+            else
+                cout << "Not found\n";
         }
-        else if (cmd == "key-update")
+        else if (cmd == "delete")
         {
-            int id;
-            string newKey, newValue;
-            iss >> id >> newKey >> newValue;
-            logger.updateElementById(id, newKey, newValue);
+            string key;
+            iss >> key;
+            if (db.Delete(key))
+                cout << "OK\n";
+            else
+                cout << "Error\n";
         }
-        else if (cmd == "save")
+        else if (cmd == "next")
         {
-            logger.saveLogToFile();
+            db.SwitchToNextFile();
+            cout << "OK\n";
         }
         else if (cmd == "exit")
         {
-            logger.saveLogToFile(); // Save log entries to file before exiting
             break;
         }
         else
         {
-            cout << "Invalid command. Type 'help' for available commands.\n";
+            cout << "Unknown command\n";
         }
     }
 

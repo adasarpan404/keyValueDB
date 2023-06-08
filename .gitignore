@@ -2,3 +2,4 @@ obj/
 log*.keyvalue
 keyValueStore
 .vscode/
+data/

@@ -1,6 +1,6 @@
 # KeyValueDB
 
-- I am creating simple DB implementation using append only log. 
+- I am creating simple DB implementation using bitcask. 
 
 ## Languages Used
 
@@ -12,9 +12,3 @@
 - cd KeyValueDB
 - make
 
-### Progress
-
-- Append only log with auto increment ID.
-- Search by Key
-- Backup in a disk while exiting the database.
-- Search by Id.
